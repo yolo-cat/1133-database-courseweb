@@ -5,6 +5,18 @@
     <div v-if="error" class="error">{{ error }}</div>
 
     <div class="login-section">
+      <h2>管理員登入區</h2>
+      <div v-if="administrators.length > 0" class="user-list">
+        <div v-for="user in administrators" :key="user.id" class="user-card" @click="handleLogin(user)">
+          <div class="user-name">{{ user.displayName }}</div>
+          <div class="user-role">{{ user.role }}</div>
+          <div class="user-username">({{ user.username }})</div>
+        </div>
+      </div>
+      <p v-else>沒有管理員資料</p>
+    </div>
+
+    <div class="login-section">
       <h2>老師登入區</h2>
       <div v-if="teachers.length > 0" class="user-list">
         <div v-for="user in teachers" :key="user.id" class="user-card" @click="handleLogin(user)">
@@ -43,7 +55,8 @@ const allUsers = ref([]);
 const error = ref('');
 const loading = ref(true);
 
-const teachers = computed(() => allUsers.value.filter(u => u.role === 'TEACHER' || u.role === 'ADMIN'));
+const administrators = computed(() => allUsers.value.filter(u => u.role === 'ADMIN'));
+const teachers = computed(() => allUsers.value.filter(u => u.role === 'TEACHER'));
 const students = computed(() => allUsers.value.filter(u => u.role === 'STUDENT'));
 
 async function loadUsers() {
