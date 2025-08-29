@@ -23,3 +23,15 @@ export function deleteStudent(id) {
 export function fetchEnrollmentsByStudent(studentId) {
     return http.get(`/students/${studentId}/enrollments`)
 }
+
+export function searchStudentsByFirstName(firstName) {
+  return http.get('/students/search/firstname', { params: { firstName } });
+}
+
+export function searchStudentsByLastName(lastName) {
+  return http.get('/students/search/lastname', { params: { lastName } });
+}
+
+export function searchStudentsByFullName(lastName, firstName) {
+  return http.get('/students/search/fullname', { params: { lastName, firstName } });
+}

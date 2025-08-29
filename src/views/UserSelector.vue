@@ -8,7 +8,7 @@
       <h2>老師登入區</h2>
       <div v-if="teachers.length > 0" class="user-list">
         <div v-for="user in teachers" :key="user.id" class="user-card" @click="handleLogin(user)">
-          <div class="user-name">{{ user.displayName }}</div>
+          <div class="user-name">{{ getLastFirst(user.displayName) }}</div>
           <div class="user-role">{{ user.role }}</div>
           <div class="user-username">({{ user.username }})</div>
         </div>
@@ -20,7 +20,7 @@
       <h2>學生登入區</h2>
       <div v-if="students.length > 0" class="user-list">
         <div v-for="user in students" :key="user.id" class="user-card" @click="handleLogin(user)">
-          <div class="user-name">{{ user.displayName }}</div>
+          <div class="user-name">{{ getLastFirst(user.displayName) }}</div>
           <div class="user-role">{{ user.role }}</div>
           <div class="user-username">({{ user.username }})</div>
         </div>
@@ -43,13 +43,14 @@ const allUsers = ref([]);
 const error = ref('');
 const loading = ref(true);
 
-const teachers = computed(() => allUsers.value.filter(u => u.role === 'TEACHER' || u.role === 'ADMIN'));
+const teachers = computed(() => allUsers.value.filter(u => u.role === 'TEACHER'));
 const students = computed(() => allUsers.value.filter(u => u.role === 'STUDENT'));
 
 async function loadUsers() {
   loading.value = true;
   try {
     const { data } = await fetchAllUsers();
+    console.log('API users data:', data); // 調試用，觀察資料結構
     allUsers.value = data;
   } catch (e) {
     error.value = e?.response?.data?.message || '無法載入使用者列表。';
@@ -77,6 +78,15 @@ async function handleLogin(user) {
   } catch (e) {
     error.value = e?.response?.data?.message || '模擬登入失敗。';
   }
+}
+
+function getLastFirst(displayName) {
+  if (!displayName) return '';
+  const parts = displayName.trim().split(' ');
+  if (parts.length === 2) {
+    return `${parts[1]} ${parts[0]}`;
+  }
+  return displayName;
 }
 
 onMounted(loadUsers);

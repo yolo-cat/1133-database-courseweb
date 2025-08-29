@@ -5,7 +5,7 @@
     <div v-if="error" class="error">{{ error }}</div>
     <div v-if="users.length > 0" class="user-list">
       <div v-for="user in users" :key="user.username" class="user-card" @click="handleLoginAs(user.username)">
-        <div class="user-name">{{ user.displayName }}</div>
+        <div class="user-name">{{ getLastFirst(user.displayName) }}</div>
         <div class="user-role">{{ user.role }}</div>
         <div class="user-username">({{ user.username }})</div>
       </div>
@@ -27,7 +27,11 @@ const error = ref('');
 async function loadUsers() {
   try {
     const { data } = await fetchAllUsers();
-    users.value = data;
+    // 預設 displayName 為 lastname firstname
+    users.value = data.map(user => ({
+      ...user,
+      displayName: `${user.lastName || ''} ${user.firstName || ''}`.trim()
+    }));
   } catch (e) {
     error.value = e?.response?.data?.message || '無法載入使用者列表。';
   }
@@ -52,6 +56,15 @@ async function handleLoginAs(username) {
   } catch (e) {
     error.value = e?.response?.data?.message || '模擬登入失敗。';
   }
+}
+
+function getLastFirst(displayName) {
+  if (!displayName) return '';
+  const parts = displayName.trim().split(' ');
+  if (parts.length === 2) {
+    return `${parts[1]} ${parts[0]}`;
+  }
+  return displayName;
 }
 
 onMounted(loadUsers);

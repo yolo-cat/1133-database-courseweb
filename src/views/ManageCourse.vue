@@ -17,7 +17,7 @@
       <tbody>
       <tr v-for="enrollment in enrollments" :key="enrollment.id.studentId">
         <td>{{ enrollment.student?.studentId }}</td>
-        <td>{{ enrollment.student?.firstName }} {{ enrollment.student?.lastName }}</td>
+        <td>{{ enrollment.student?.lastName }}{{ enrollment.student?.firstName }}</td>
         <td>{{ enrollment.enrollmentDate }}</td>
         <td>
           <input v-model="enrollment.grade" class="grade-input" />

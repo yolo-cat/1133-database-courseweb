@@ -1,12 +1,13 @@
 <template>
   <div class="container">
     <h1 class="title">我的個人資料</h1>
+    <div v-if="form" class="user-name">{{ form.lastName }} {{ form.firstName }}</div>
     <form v-if="form" @submit.prevent="submit">
-      <label>名字</label>
-      <input v-model.trim="form.firstName" required maxlength="100" />
-
       <label>姓氏</label>
       <input v-model.trim="form.lastName" required maxlength="100" />
+
+      <label>名字</label>
+      <input v-model.trim="form.firstName" required maxlength="100" />
 
       <label>電子郵件</label>
       <input v-model.trim="form.email" type="email" required maxlength="150" />
@@ -41,9 +42,9 @@ onMounted(async () => {
   if (studentId) {
     try {
       const { data } = await getStudent(studentId);
-      form.value = { 
-        firstName: data.firstName, 
-        lastName: data.lastName, 
+      form.value = {
+        lastName: data.lastName,
+        firstName: data.firstName,
         email: data.email, 
         dateOfBirth: data.dateOfBirth 
       };
@@ -79,6 +80,12 @@ async function submit() {
 
 .title {
   margin-bottom: 12px;
+}
+
+.user-name {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 16px;
 }
 
 form {

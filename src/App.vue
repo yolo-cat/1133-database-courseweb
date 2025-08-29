@@ -60,6 +60,19 @@ function handleLogout() {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+}
+
+header, main {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
 }
 
 header {
@@ -131,5 +144,21 @@ nav a:focus, nav a:hover {
 main {
   flex-grow: 1;
   padding: 1rem;
+}
+
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .nav-left, .nav-right {
+    width: 100%;
+    justify-content: flex-start;
+    margin-bottom: 0.5rem;
+  }
+  .nav-right {
+    justify-content: flex-end;
+  }
 }
 </style>

@@ -2,11 +2,11 @@
   <div class="container">
     <h1 class="title">{{ isEdit ? '編輯學生資訊' : '新增學生' }}</h1>
     <form @submit.prevent="submit">
-      <label>名字</label>
-      <input v-model.trim="form.firstName" required maxlength="100" />
-
       <label>姓氏</label>
       <input v-model.trim="form.lastName" required maxlength="100" />
+
+      <label>名字</label>
+      <input v-model.trim="form.firstName" required maxlength="100" />
 
       <label>電子郵件</label>
       <input v-model.trim="form.email" type="email" required maxlength="150" />
@@ -41,7 +41,7 @@ onMounted(async () => {
   if (isEdit.value) {
     try {
       const { data } = await getStudent(id);
-      form.value = { firstName: data.firstName, lastName: data.lastName, email: data.email, dateOfBirth: data.dateOfBirth };
+      form.value = { lastName: data.lastName, firstName: data.firstName, email: data.email, dateOfBirth: data.dateOfBirth };
     } catch (e) {
       error.value = e?.response?.data?.message || e.message;
     }
