@@ -20,7 +20,7 @@ export default defineConfig({
         proxy: {
             // 只要請求以 /api 開頭，就代理到後端
             '/api': {
-                target: 'http://localhost:8080',
+                target: 'http://localhost:8081', // 修改端口为8081
                 changeOrigin: true
             }
         }
