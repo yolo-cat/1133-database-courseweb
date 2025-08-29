@@ -63,9 +63,10 @@ function handleLogout() {
 }
 
 header {
-  background-color: #f8f9fa;
+  background-color: var(--color-background-soft);
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
   padding: 1rem;
-  border-bottom: 1px solid #dee2e6;
 }
 
 nav {
@@ -74,6 +75,11 @@ nav {
   align-items: center;
   gap: 2rem;
   font-size: 1.1rem;
+  background: var(--color-nav-bg);
+  color: var(--color-text);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  padding: 0.5rem 1rem;
 }
 
 .nav-left {
@@ -90,12 +96,23 @@ nav {
 
 nav a {
   text-decoration: none;
-  color: #007bff;
+  color: var(--color-nav-link);
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
 }
 
 nav a.router-link-exact-active {
-  color: #0056b3;
+  color: var(--color-nav-link-active);
+  background: rgba(0,0,0,0.07);
   font-weight: bold;
+}
+
+nav a:focus, nav a:hover {
+  background: rgba(0,0,0,0.10);
+  color: var(--color-nav-link-active);
+  outline: none;
 }
 
 .nav-right {

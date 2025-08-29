@@ -33,6 +33,10 @@
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
 
+  --color-nav-bg: #f8f9fa;
+  --color-nav-link: #007bff;
+  --color-nav-link-active: #0056b3;
+
   --section-gap: 160px;
 }
 
@@ -47,6 +51,10 @@
 
     --color-heading: var(--vt-c-text-dark-1);
     --color-text: var(--vt-c-text-dark-2);
+
+    --color-nav-bg: #222222;
+    --color-nav-link: #66aaff;
+    --color-nav-link-active: #ffffff;
   }
 }
 
@@ -83,4 +91,10 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  background: var(--color-background);
+  color: var(--color-text);
+  transition: background 0.3s, color 0.3s;
 }
