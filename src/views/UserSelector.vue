@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <h1 class="title">開發者登入</h1>
-    <p>請點擊一個使用者以模擬登入</p>
+    <h1 class="title">選擇身份登入</h1>
+    <p>請點擊一個帳號以登入系統</p>
     <div v-if="error" class="error">{{ error }}</div>
 
     <div class="login-section">
