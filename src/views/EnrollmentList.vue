@@ -154,8 +154,12 @@ onMounted(load);
   margin-bottom: 12px;
 }
 .table {
-  width: 100%;
+  width: 95%; /* 向內縮5% */
   border-collapse: collapse;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 .table th,
 .table td {

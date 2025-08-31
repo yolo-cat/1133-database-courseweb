@@ -1,6 +1,6 @@
 <template>
   <div id="app" :class="themeClass">
-    <!-- 移除夜間模式切換按鈕 -->
+
     <header v-if="isAuthenticated">
       <nav class="nb-brutal">
         <div class="nav-left">

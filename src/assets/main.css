@@ -90,8 +90,8 @@ nav.nb-brutal {
   font-weight: bold;
 }
 nav.nb-brutal a {
-  color: var(--color-text);
-  background: #fff;
+  color: var(--color-nav-link);
+  background: var(--color-nav-bg);
   font-weight: 700;
   padding: 8px 16px;
   border-radius: 6px;
@@ -103,14 +103,14 @@ nav.nb-brutal a {
 }
 nav.nb-brutal a.router-link-exact-active {
   color: var(--color-nav-link-active);
-  background: var(--color-nav-bg);
+  background: var(--color-background);
   border-color: var(--color-nav-link-active);
   box-shadow: 8px 8px 0 #000;
   font-weight: bold;
 }
 nav.nb-brutal a:focus, nav.nb-brutal a:hover {
-  background: var(--color-nav-link-active);
-  color: #fff;
+  background: var(--color-nav-link);
+  color: var(--color-nav-bg);
   border-color: #000;
   box-shadow: 12px 12px 0 #000;
   outline: none;

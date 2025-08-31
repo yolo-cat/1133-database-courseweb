@@ -5,6 +5,16 @@
         {{ theme === 'light' ? '夜間模式' : '白天模式' }}
       </button>
     </div>
+    <div class="role-selector-stack nb-brutal">
+      <h2 class="role-title">快速身份選擇</h2>
+      <div class="role-btn-group">
+        <button class="role-btn nb-brutal" @click="quickSelectRole('ADMIN')">管理員</button>
+        <button class="role-btn nb-brutal" @click="quickSelectRole('TEACHER')">教師</button>
+        <button class="role-btn nb-brutal" @click="quickSelectRole('STUDENT')">學生</button>
+      </div>
+      <p v-if="quickRole" class="selected-msg nb-brutal">已選擇身份：{{ roleLabel[quickRole] }}</p>
+    </div>
+    <!-- stack在body上方，以下為原本內容 -->
     <div class="center-content">
       <h1 class="title">選擇身份登入</h1>
       <p>請點擊一個帳號以登入系統</p>
@@ -47,9 +57,15 @@ const router = useRouter();
 const allUsers = ref([]);
 const error = ref('');
 const loading = ref(true);
+const quickRole = ref(null);
 
 const teachers = computed(() => allUsers.value.filter(u => u.role === 'TEACHER'));
 const students = computed(() => allUsers.value.filter(u => u.role === 'STUDENT'));
+const roleLabel = {
+  ADMIN: '管理員',
+  TEACHER: '教師',
+  STUDENT: '學生'
+};
 
 const theme = themeStore.theme;
 const themeClass = themeStore.themeClass;
@@ -88,6 +104,18 @@ async function handleLogin(user) {
     }
   } catch (e) {
     error.value = e?.response?.data?.message || '模擬登入失敗。';
+  }
+}
+
+function quickSelectRole(role) {
+  quickRole.value = role;
+  // 根據選擇的身份過濾使用者
+  if (role === 'TEACHER') {
+    allUsers.value = teachers.value;
+  } else if (role === 'STUDENT') {
+    allUsers.value = students.value;
+  } else {
+    allUsers.value = [];
   }
 }
 
@@ -144,6 +172,56 @@ onMounted(loadUsers);
   .container {
     padding-top: 56px;
   }
+}
+.role-selector-stack {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 40px auto;
+  padding: 24px 0 16px 0;
+  border: 3px solid #000;
+  border-radius: 16px;
+  background: var(--color-background-soft);
+  color: var(--color-text);
+  box-shadow: 6px 6px 0 #000, 0 4px 12px rgba(0,0,0,0.10);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.role-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: inherit;
+  text-align: center;
+}
+.role-btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 8px;
+}
+.role-btn {
+  min-width: 120px;
+  padding: 16px 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background: inherit;
+  color: inherit;
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0 #000;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+.role-btn:hover {
+  background: #fff;
+  color: #181818;
+}
+.selected-msg {
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 12px;
+  font-weight: bold;
 }
 .center-content {
   width: 100%;

@@ -92,8 +92,12 @@ onMounted(load);
   margin-bottom: 24px;
 }
 .table {
-  width: 100%;
+  width: 95%;
   border-collapse: collapse;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  margin-left: auto;
+  margin-right: auto;
   background: inherit;
   color: inherit;
 }

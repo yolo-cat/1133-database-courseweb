@@ -176,10 +176,12 @@ onMounted(async () => {
   color: inherit;
 }
 .table {
-  width: 100%;
+  width: 95%;
   border-collapse: collapse;
-  background: inherit;
-  color: inherit;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 .table th, .table td {
   border: 3px solid #000;
