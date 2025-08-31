@@ -178,30 +178,52 @@ onMounted(loadUsers);
   justify-content: center; /* 置中 */
 }
 .user-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
+  border: 3px solid var(--color-border);
+  border-radius: 12px;
+  padding: 20px 16px;
   width: 220px;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s cubic-bezier(.77,0,.175,1);
   text-align: center;
+  background: var(--color-background-soft);
+  color: var(--color-text);
+  box-shadow: 6px 6px 0 #000, 0 4px 12px rgba(0,0,0,0.10);
+  position: relative;
+  font-family: 'IBM Plex Sans', 'Arial', sans-serif;
 }
 .user-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 12px 12px 0 #000, 0 8px 24px rgba(0,0,0,0.18);
+  background: var(--color-background);
+  border-color: var(--color-nav-link-active);
+  z-index: 2;
+}
+.user-card:active {
+  box-shadow: 2px 2px 0 #000;
+  transform: scale(0.98);
 }
 .user-name {
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
 }
 .user-role {
   font-style: italic;
-  color: #555;
+  color: var(--color-nav-link);
   margin: 8px 0;
+  font-weight: 600;
 }
 .user-username {
   font-family: monospace;
-  color: #777;
+  color: var(--color-nav-link-active);
+  font-size: 0.95rem;
+  background: var(--color-background-mute);
+  border-radius: 6px;
+  padding: 2px 8px;
+  box-shadow: 2px 2px 0 #000;
+  display: inline-block;
 }
 .error {
   color: #fff;

@@ -95,6 +95,7 @@ async function enroll(courseId) {
     return;
   }
   const enrollmentData = {
+    id: { studentId, courseId }, // 加入 id 欄位
     student: { studentId },
     course: { courseId },
     enrollmentDate: new Date().toISOString().slice(0, 10)

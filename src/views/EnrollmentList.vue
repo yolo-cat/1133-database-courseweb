@@ -21,7 +21,22 @@
         <td>{{ enrollment.student?.firstName }} {{ enrollment.student?.lastName }}</td>
         <td>{{ enrollment.course?.courseName }}</td>
         <td>{{ enrollment.enrollmentDate }}</td>
-        <td>{{ enrollment.grade }}</td>
+        <td>
+          <template v-if="canEdit()">
+            <template v-if="editing[`${enrollment.id.studentId}-${enrollment.id.courseId}`]">
+              <input v-model="editing[`${enrollment.id.studentId}-${enrollment.id.courseId}`].grade" class="nb-brutal" style="width: 60px; text-align: center; font-weight: bold;" />
+              <button @click="saveEdit(enrollment)" :disabled="saving[`${enrollment.id.studentId}-${enrollment.id.courseId}`]" class="theme-btn nb-brutal" style="margin-left: 4px;">儲存</button>
+              <button @click="cancelEdit(enrollment)" class="theme-btn nb-brutal" style="margin-left: 4px;">取消</button>
+            </template>
+            <template v-else>
+              <span>{{ enrollment.grade }}</span>
+              <button @click="startEdit(enrollment)" class="theme-btn nb-brutal" style="margin-left: 4px;">編輯</button>
+            </template>
+          </template>
+          <template v-else>
+            {{ enrollment.grade }}
+          </template>
+        </td>
       </tr>
       </tbody>
     </table>
@@ -32,14 +47,52 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { fetchEnrollments } from '@/api/enrollments';
+import { fetchEnrollments, updateEnrollment } from '@/api/enrollments';
 import { themeStore } from '@/stores/theme';
+import { authStore } from '@/stores/auth';
 
 const enrollments = ref([]);
 const error = ref('');
 const theme = themeStore.theme;
 function toggleTheme() {
   themeStore.toggleTheme();
+}
+
+const editing = ref({}); // { 'studentId-courseId': { grade, enrollmentDate } }
+const saving = ref({}); // { 'studentId-courseId': true/false }
+
+const canEdit = () => {
+  return authStore.userRole.value === 'ADMIN' || authStore.userRole.value === 'TEACHER';
+};
+
+function startEdit(enrollment) {
+  const key = `${enrollment.id.studentId}-${enrollment.id.courseId}`;
+  editing.value[key] = {
+    grade: enrollment.grade,
+    enrollmentDate: enrollment.enrollmentDate
+  };
+}
+function cancelEdit(enrollment) {
+  const key = `${enrollment.id.studentId}-${enrollment.id.courseId}`;
+  editing.value[key] = undefined;
+}
+async function saveEdit(enrollment) {
+  const key = `${enrollment.id.studentId}-${enrollment.id.courseId}`;
+  saving.value[key] = true;
+  error.value = '';
+  try {
+    await updateEnrollment({
+      id: { studentId: enrollment.id.studentId, courseId: enrollment.id.courseId },
+      grade: editing.value[key].grade,
+      enrollmentDate: editing.value[key].enrollmentDate
+    });
+    await load();
+    editing.value[key] = undefined;
+  } catch (e) {
+    error.value = e?.response?.data?.message || e.message;
+  } finally {
+    saving.value[key] = false;
+  }
 }
 
 async function load() {

@@ -56,9 +56,14 @@ header {
 
 /* nav 佈局調整 */
 nav.nb-brutal {
+  background: var(--color-nav-bg);
+  color: var(--color-text);
+  border-radius: 8px;
+  box-shadow: 6px 6px 0 #000, 0 4px 12px rgba(0,0,0,0.10);
+  border: 3px solid #000;
+  padding: 0.5rem 1rem;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
   gap: 0.5rem;
 }
 .nav-left {
@@ -75,6 +80,75 @@ nav.nb-brutal {
     justify-content: flex-end;
     margin-bottom: 0;
   }
+}
+.nav-section {
+  color: var(--color-text);
+  font-weight: bold;
+}
+.nav-section strong {
+  color: var(--color-text);
+  font-weight: bold;
+}
+nav.nb-brutal a {
+  color: var(--color-text);
+  background: #fff;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0 #000;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, border-color 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+nav.nb-brutal a.router-link-exact-active {
+  color: var(--color-nav-link-active);
+  background: var(--color-nav-bg);
+  border-color: var(--color-nav-link-active);
+  box-shadow: 8px 8px 0 #000;
+  font-weight: bold;
+}
+nav.nb-brutal a:focus, nav.nb-brutal a:hover {
+  background: var(--color-nav-link-active);
+  color: #fff;
+  border-color: #000;
+  box-shadow: 12px 12px 0 #000;
+  outline: none;
+}
+
+/* 修正 logout-btn 主題色彩 */
+.logout-btn {
+  background: var(--color-nav-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* 黑暗模式下 logout-btn 預設黑色背景、白色文字，hover 反轉為白色背景、黑色文字 */
+.nb-theme-dark .logout-btn {
+  background: #181818 !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+}
+.nb-theme-dark .logout-btn:hover {
+  background: #fff !important;
+  color: #181818 !important;
+  border: 1px solid #181818 !important;
+}
+/* 白天模式下維持原本設計 */
+.nb-theme-light .logout-btn {
+  background: var(--color-nav-bg) !important;
+  color: var(--color-text) !important;
+  border: 1px solid var(--color-border) !important;
+}
+.nb-theme-light .logout-btn:hover {
+  background: #181818 !important;
+  color: #fff !important;
+  border: 1px solid #181818 !important;
 }
 
 /* main 主體內容 RWD 不重疊 */

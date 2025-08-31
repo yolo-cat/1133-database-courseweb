@@ -66,7 +66,15 @@ async function updateGrade(enrollment) {
   error.value = '';
   successMessage.value = '';
   try {
-    await updateEnrollment(enrollment);
+    const data = {
+      id: {
+        studentId: enrollment.id.studentId,
+        courseId: enrollment.id.courseId
+      },
+      grade: enrollment.grade,
+      enrollmentDate: enrollment.enrollmentDate
+    };
+    await updateEnrollment(data);
     successMessage.value = `已成功更新 ${enrollment.student.firstName} 的成績！`;
   } catch (e) {
     error.value = e?.response?.data?.message || e.message;

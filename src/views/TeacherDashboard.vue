@@ -63,7 +63,7 @@ onMounted(load);
 <style scoped>
 .container {
   background: inherit;
-  color: inherit;
+  color: var(--color-text);
   padding: 32px 0;
   border-radius: 12px;
   box-shadow: 4px 4px 0 #000;
@@ -83,11 +83,13 @@ onMounted(load);
     padding-top: 56px;
   }
 }
+.title, h2, th, td {
+  color: var(--color-text);
+}
 .title {
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 24px;
-  color: inherit;
 }
 .table {
   width: 100%;
@@ -99,17 +101,17 @@ onMounted(load);
   border: 3px solid #000;
   padding: 12px;
   text-align: left;
+  color: var(--color-text);
 }
 .table th {
   background: inherit;
-  color: inherit;
 }
 .table tr:nth-child(even) {
   background: inherit;
 }
-.btn {
-  background: inherit;
-  color: inherit;
+.btn, .logout-btn {
+  background: var(--color-nav-bg);
+  color: var(--color-text);
   border: 3px solid #000;
   padding: 8px 16px;
   font-weight: bold;
@@ -117,10 +119,11 @@ onMounted(load);
   cursor: pointer;
   border-radius: 4px;
   text-decoration: none;
+  transition: background 0.2s, color 0.2s;
 }
-.btn:hover {
-  background: #fff;
-  color: #181818;
+.btn:hover, .logout-btn:hover {
+  background: var(--color-text);
+  color: var(--color-nav-bg);
 }
 .error {
   color: #fff;
