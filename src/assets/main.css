@@ -1,10 +1,12 @@
 @import './base.css';
 
 #app {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
   font-weight: normal;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 a,
@@ -26,10 +28,59 @@ a,
     display: flex;
     place-items: center;
   }
-
   #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: block;
     padding: 0 2rem;
   }
+}
+
+/* 主題切換按鈕 RWD 佈局 */
+header {
+  position: relative;
+}
+.theme-btn-box {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  z-index: 10;
+}
+@media (max-width: 900px) {
+  .theme-btn-box {
+    position: static;
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* nav 佈局調整 */
+nav.nb-brutal {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+.nav-left {
+  width: 100%;
+}
+.theme-btn-box {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+@media (min-width: 900px) {
+  .theme-btn-box {
+    justify-content: flex-end;
+    margin-bottom: 0;
+  }
+}
+
+/* main 主體內容 RWD 不重疊 */
+main {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }

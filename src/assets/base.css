@@ -19,6 +19,17 @@
   --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+
+  /* Neo-Brutalism 主題變數 */
+  --nb-bg-light: #fff;
+  --nb-bg-dark: #181818;
+  --nb-text-light: #181818;
+  --nb-text-dark: #fff;
+  --nb-border: #000;
+  --nb-border-thick: 3px;
+  --nb-shadow: 4px 4px 0 #000;
+  --nb-sidebar-bg: #fff;
+  --nb-sidebar-bg-dark: #222;
 }
 
 /* semantic color variables for this project */
@@ -58,6 +69,176 @@
   }
 }
 
+/* 主題切換 class */
+.nb-theme-light,
+.nb-theme-dark {
+  display: flex;
+  justify-content: center; /* 置中 */
+  align-items: flex-start;
+  min-height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+}
+
+.nb-theme-light > *,
+.nb-theme-dark > * {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* 讓 .container 也置中，且不超過最大寬度 1200px */
+.container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 讓 main 內容置中 */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .nb-theme-light,
+  .nb-theme-dark {
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    justify-content: center;
+  }
+  .nb-theme-light > *,
+  .nb-theme-dark > * {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+
+/* 響應式 .container 也置中 */
+@media (max-width: 1200px) {
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+    align-items: center;
+  }
+}
+
+/* 讓 nb-theme-light/nb-theme-dark 及主體框架依視窗寬度置中且最大寬度 1200px */
+.nb-theme-light,
+.nb-theme-dark {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+}
+
+.nb-theme-light > *,
+.nb-theme-dark > * {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+  .nb-theme-light,
+  .nb-theme-dark {
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+  }
+  .nb-theme-light > *,
+  .nb-theme-dark > * {
+    max-width: 100%;
+  }
+}
+
+/* 讓 .container 也置中，且不超過最大寬度 1200px */
+.container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 讓 main 內容置中 */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* Neo-Brutalism 元素樣式 */
+.nb-brutal {
+  border: var(--nb-border-thick) solid var(--nb-border);
+  box-shadow: var(--nb-shadow);
+  background: inherit;
+  color: inherit;
+}
+
+.nb-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background: #181818;
+  color: #fff;
+  border-right: var(--nb-border-thick) solid var(--nb-border);
+  box-shadow: 4px 0 0 #000;
+  z-index: 100;
+  transition: background 0.3s;
+}
+.nb-theme-dark .nb-sidebar {
+  background: #181818;
+  color: #fff;
+}
+
+@media (max-width: 800px) {
+  .nb-sidebar {
+    display: none;
+  }
+  .nb-hamburger {
+    display: block;
+    left: 20px;
+    right: auto;
+  }
+}
+
+.nb-hamburger {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  right: auto;
+  z-index: 200;
+  background: #181818;
+  color: #fff;
+  border: var(--nb-border-thick) solid var(--nb-border);
+  box-shadow: var(--nb-shadow);
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+}
+.nb-theme-dark .nb-hamburger {
+  background: #181818;
+  color: #fff;
+}
+
 *,
 *::before,
 *::after {
@@ -70,6 +251,8 @@ body {
   min-height: 100vh;
   color: var(--color-text);
   background: var(--color-background);
+  width: 100%;
+  overflow-x: hidden;
   transition:
     color 0.5s,
     background-color 0.5s;

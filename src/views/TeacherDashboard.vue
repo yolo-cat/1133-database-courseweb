@@ -1,9 +1,13 @@
 <template>
-  <div class="container">
+  <div class="container nb-brutal">
+    <div class="theme-btn-box">
+      <button @click="toggleTheme" class="theme-btn nb-brutal">
+        {{ theme === 'light' ? '夜間模式' : '白天模式' }}
+      </button>
+    </div>
     <h1 class="title">教師儀表板</h1>
     <h2>我的課程</h2>
-
-    <table class="table">
+    <table class="table nb-brutal">
       <thead>
       <tr>
         <th>課程ID</th>
@@ -20,13 +24,12 @@
         <td>{{ course.courseDescription }}</td>
         <td>{{ course.credits }}</td>
         <td>
-          <router-link :to="`/teacher/course/${course.courseId}/manage`" class="btn">管理學生與成績</router-link>
+          <router-link :to="`/teacher/course/${course.courseId}/manage`" class="btn nb-brutal">管理學生與成績</router-link>
         </td>
       </tr>
       </tbody>
     </table>
-
-    <p v-if="error" class="error">{{ error }}</p>
+    <p v-if="error" class="error nb-brutal">{{ error }}</p>
   </div>
 </template>
 
@@ -34,12 +37,15 @@
 import { ref, onMounted } from 'vue';
 import { fetchCoursesByTeacher } from '@/api/teachers';
 import { authStore } from '@/stores/auth';
+import { themeStore } from '@/stores/theme';
 
-// Hardcoded teacher ID for now. This would come from login state.
 const teacherId = authStore.userId.value;
-
 const courses = ref([]);
 const error = ref('');
+const theme = themeStore.theme;
+function toggleTheme() {
+  themeStore.toggleTheme();
+}
 
 async function load() {
   error.value = '';
@@ -55,31 +61,93 @@ onMounted(load);
 </script>
 
 <style scoped>
-/* Reusing styles */
 .container {
-  max-width: 960px;
-  margin: 24px auto;
-  padding: 0 12px;
+  background: inherit;
+  color: inherit;
+  padding: 32px 0;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 #000;
+  min-height: 80vh;
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+@media (max-width: 900px) {
+  .container {
+    padding-top: 56px;
+  }
 }
 .title {
-  margin-bottom: 12px;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 24px;
+  color: inherit;
 }
 .table {
   width: 100%;
   border-collapse: collapse;
+  background: inherit;
+  color: inherit;
 }
-.table th,
-.table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+.table th, .table td {
+  border: 3px solid #000;
+  padding: 12px;
+  text-align: left;
+}
+.table th {
+  background: inherit;
+  color: inherit;
+}
+.table tr:nth-child(even) {
+  background: inherit;
 }
 .btn {
-  padding: 6px 10px;
-  border: 1px solid #999;
-  background: #f7f7f7;
+  background: inherit;
+  color: inherit;
+  border: 3px solid #000;
+  padding: 8px 16px;
+  font-weight: bold;
+  box-shadow: 4px 4px 0 #000;
   cursor: pointer;
+  border-radius: 4px;
+  text-decoration: none;
+}
+.btn:hover {
+  background: #fff;
+  color: #181818;
 }
 .error {
-  color: #c33;
+  color: #fff;
+  background: #c00;
+  padding: 8px 16px;
+  margin-top: 24px;
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0 #000;
+}
+.theme-btn-box {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+.theme-btn {
+  background: inherit;
+  color: inherit;
+  border: 3px solid #000;
+  padding: 8px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s, color 0.3s;
+}
+.theme-btn:hover {
+  background: #fff;
+  color: #181818;
 }
 </style>

@@ -4,9 +4,14 @@ export function fetchEnrollments() {
     return http.get('/enrollments')
 }
 
+export function fetchStudentEnrollments(studentId) {
+    // 查詢學生已選課程
+    return http.get(`/enrollments/student/${studentId}`)
+}
+
 export function getEnrollment(id) {
     // Note: The backend controller expects the ID in the request body for GET.
-    // This is unconventional. Axios get() can have a data property.
+    // 這裡如需更標準，建議改為 /enrollments/student/{studentId}/course/{courseId}
     return http.get('/enrollments/get', { data: id })
 }
 
@@ -19,7 +24,7 @@ export function updateEnrollment(data) {
     return http.put('/enrollments', data)
 }
 
-export function deleteEnrollment(id) {
-    // Note: The backend controller expects the ID in the request body for DELETE.
-    return http.delete('/enrollments', { data: id })
+export function deleteEnrollment(enrollmentId) {
+    // enrollmentId: { studentId, courseId }
+    return http.delete('/enrollments', { data: enrollmentId })
 }

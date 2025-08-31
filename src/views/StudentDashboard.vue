@@ -1,9 +1,13 @@
 <template>
-  <div class="container">
+  <div class="container nb-brutal">
+    <div class="theme-btn-box">
+      <button @click="toggleTheme" class="theme-btn nb-brutal">
+        {{ theme === 'light' ? '夜間模式' : '白天模式' }}
+      </button>
+    </div>
     <h1 class="title">學生儀表板</h1>
     <h2>我選修的課程</h2>
-
-    <table class="table">
+    <table class="table nb-brutal">
       <thead>
       <tr>
         <th>課程ID</th>
@@ -23,8 +27,7 @@
       </tr>
       </tbody>
     </table>
-
-    <p v-if="error" class="error">{{ error }}</p>
+    <p v-if="error" class="error nb-brutal">{{ error }}</p>
   </div>
 </template>
 
@@ -32,12 +35,15 @@
 import { ref, onMounted } from 'vue';
 import { fetchEnrollmentsByStudent } from '@/api/students';
 import { authStore } from '@/stores/auth';
+import { themeStore } from '@/stores/theme';
 
-// Hardcoded student ID for now. This would come from login state.
 const studentId = authStore.userId.value;
-
 const enrollments = ref([]);
 const error = ref('');
+const theme = themeStore.theme;
+function toggleTheme() {
+  themeStore.toggleTheme();
+}
 
 async function load() {
   error.value = '';
@@ -53,25 +59,77 @@ onMounted(load);
 </script>
 
 <style scoped>
-/* Reusing styles */
 .container {
-  max-width: 960px;
-  margin: 24px auto;
-  padding: 0 12px;
+  background: inherit;
+  color: inherit;
+  padding: 32px 0;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 #000;
+  min-height: 80vh;
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+@media (max-width: 900px) {
+  .container {
+    padding-top: 56px;
+  }
 }
 .title {
-  margin-bottom: 12px;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 24px;
+  color: inherit;
 }
 .table {
   width: 100%;
   border-collapse: collapse;
+  background: inherit;
+  color: inherit;
 }
-.table th,
-.table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+.table th, .table td {
+  border: 3px solid #000;
+  padding: 12px;
+  text-align: left;
+}
+.table th {
+  background: inherit;
+  color: inherit;
+}
+.table tr:nth-child(even) {
+  background: inherit;
 }
 .error {
-  color: #c33;
+  color: #fff;
+  background: #c00;
+  padding: 8px 16px;
+  margin-top: 24px;
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0 #000;
+}
+.theme-btn-box {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+}
+.theme-btn {
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+.theme-btn:hover {
+  background: #333;
 }
 </style>

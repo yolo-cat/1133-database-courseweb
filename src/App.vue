@@ -1,7 +1,8 @@
 <template>
-  <div id="app">
+  <div id="app" :class="themeClass">
+    <!-- 移除夜間模式切換按鈕 -->
     <header v-if="isAuthenticated">
-      <nav>
+      <nav class="nb-brutal">
         <div class="nav-left">
           <div v-if="isAdmin" class="nav-section">
             <strong>Admin:</strong>
@@ -21,23 +22,25 @@
             <router-link to="/student/courses">Course Catalog</router-link> |
             <router-link to="/student/profile">My Profile</router-link>
           </div>
-        </div>
-        <div class="nav-right">
-          <span>Welcome, {{ userName }} ({{ userRole }})</span>
-          <button @click="handleLogout" class="logout-btn">Logout</button>
+          <span class="nav-actions">
+            Welcome, {{ userName }} ({{ userRole }})
+            <button @click="handleLogout" class="logout-btn nb-brutal">Logout</button>
+          </span>
         </div>
       </nav>
     </header>
     <main>
       <router-view />
+      <!-- 移除 Sidebar 與漢堡選單 -->
     </main>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { authStore } from '@/stores/auth';
+import { themeStore } from '@/stores/theme';
 
 const router = useRouter();
 
@@ -53,6 +56,30 @@ function handleLogout() {
   authStore.logout();
   router.push({ name: 'user-selector' });
 }
+
+const theme = themeStore.theme;
+const themeClass = themeStore.themeClass;
+function toggleTheme() {
+  themeStore.toggleTheme();
+}
+
+const sidebarOpen = ref(false);
+const showHamburger = ref(false);
+function openSidebar() { sidebarOpen.value = true; }
+function closeSidebar() { sidebarOpen.value = false; }
+
+function handleResize() {
+  showHamburger.value = window.innerWidth < 800;
+  if (window.innerWidth >= 800) sidebarOpen.value = true;
+  else sidebarOpen.value = false;
+}
+onMounted(() => {
+  window.addEventListener('resize', handleResize);
+  handleResize();
+});
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+});
 </script>
 
 <style scoped>
@@ -60,18 +87,18 @@ function handleLogout() {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  width: 100vw;
-  max-width: 100vw;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   box-sizing: border-box;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: flex-start;
 }
 
 header, main {
   width: 100%;
   max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
   box-sizing: border-box;
 }
 
@@ -80,11 +107,14 @@ header {
   color: var(--color-text);
   border-bottom: 1px solid var(--color-border);
   padding: 1rem;
+  position: relative;
 }
 
 nav {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 2rem;
   font-size: 1.1rem;
@@ -96,15 +126,27 @@ nav {
 }
 
 .nav-left {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .nav-section {
   display: flex;
   gap: 1rem;
   align-items: center;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
 }
 
 nav a {
@@ -128,17 +170,26 @@ nav a:focus, nav a:hover {
   outline: none;
 }
 
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
 .logout-btn {
     padding: 6px 10px;
     border: 1px solid #999;
     background: #f7f7f7;
     cursor: pointer;
+}
+
+.theme-btn {
+  margin-left: 12px;
+  padding: 6px 16px;
+  font-weight: bold;
+}
+
+.nb-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.nb-sidebar li {
+  margin: 16px 0;
 }
 
 main {
@@ -149,16 +200,16 @@ main {
 @media (max-width: 600px) {
   nav {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     gap: 0.5rem;
   }
   .nav-left, .nav-right {
     width: 100%;
-    justify-content: flex-start;
+    justify-content: center;
     margin-bottom: 0.5rem;
   }
   .nav-right {
-    justify-content: flex-end;
+    justify-content: center;
   }
 }
 </style>

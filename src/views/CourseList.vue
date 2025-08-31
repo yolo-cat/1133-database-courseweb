@@ -1,12 +1,17 @@
 <template>
-  <div class="container">
+  <div class="container nb-brutal">
+    <div class="theme-btn-box">
+      <button @click="$emit('toggleTheme')" class="theme-btn nb-brutal">
+        {{ $attrs.theme === 'light' ? '夜間模式' : '白天模式' }}
+      </button>
+    </div>
     <h1 class="title">課程列表</h1>
 
     <div class="toolbar">
-      <router-link class="btn" to="/courses/new">+ 新增課程</router-link>
+      <router-link class="btn nb-brutal" to="/courses/new">+ 新增課程</router-link>
     </div>
 
-    <table class="table">
+    <table class="table nb-brutal">
       <thead>
       <tr>
         <th>ID</th>
@@ -25,14 +30,14 @@
         <td>{{ course.credits }}</td>
         <td>{{ course.teacher?.name }}</td>
         <td>
-          <router-link :to="`/courses/${course.courseId}/edit`" class="btn">編輯</router-link>
-          <button class="btn danger" @click="remove(course.courseId)">刪除</button>
+          <router-link :to="`/courses/${course.courseId}/edit`" class="btn nb-brutal">編輯</router-link>
+          <button class="btn danger nb-brutal" @click="remove(course.courseId)">刪除</button>
         </td>
       </tr>
       </tbody>
     </table>
 
-    <p v-if="error" class="error">{{ error }}</p>
+    <p v-if="error" class="error nb-brutal">{{ error }}</p>
   </div>
 </template>
 
@@ -67,42 +72,100 @@ onMounted(load);
 </script>
 
 <style scoped>
-/* Styles are copied from StudentList.vue and should be sufficient */
 .container {
-  max-width: 960px;
-  margin: 24px auto;
-  padding: 0 12px;
+  background: inherit;
+  color: inherit;
+  padding: 32px 0;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 #000;
+  min-height: 80vh;
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.theme-btn-box {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  left: auto;
+  z-index: 10;
+  width: auto;
+  max-width: none;
+  display: flex;
+  justify-content: flex-end;
+}
+@media (max-width: 900px) {
+  .theme-btn-box {
+    position: static;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 12px;
+    top: auto;
+    right: auto;
+  }
+  .container {
+    padding-top: 56px;
+  }
 }
 .title {
-  margin-bottom: 12px;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 24px;
+  color: inherit;
 }
 .toolbar {
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 24px;
 }
 .table {
   width: 100%;
   border-collapse: collapse;
+  background: inherit;
+  color: inherit;
 }
-.table th,
-.table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+.table th, .table td {
+  border: 3px solid #000;
+  padding: 12px;
+  text-align: left;
+}
+.table th {
+  background: inherit;
+  color: inherit;
+}
+.table tr:nth-child(even) {
+  background: inherit;
 }
 .btn {
-  padding: 6px 10px;
-  margin-right: 6px;
-  border: 1px solid #999;
-  background: #f7f7f7;
+  background: inherit;
+  color: inherit;
+  border: 3px solid #000;
+  padding: 8px 16px;
+  font-weight: bold;
+  box-shadow: 4px 4px 0 #000;
   cursor: pointer;
+  border-radius: 4px;
   text-decoration: none;
-  color: #333;
+  margin-right: 8px;
 }
-.btn.danger {
-  border-color: #c33;
+.btn:hover {
+  background: #fff;
+  color: #181818;
+}
+.danger {
+  background: #c00;
+  color: #fff;
 }
 .error {
-  color: #c33;
+  color: #fff;
+  background: #c00;
+  padding: 8px 16px;
+  margin-top: 24px;
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0 #000;
 }
 </style>

@@ -1,5 +1,10 @@
 <template>
-  <div class="container">
+  <div class="container nb-brutal">
+    <div class="theme-btn-box">
+      <button @click="toggleTheme" class="theme-btn nb-brutal">
+        {{ theme === 'light' ? '夜間模式' : '白天模式' }}
+      </button>
+    </div>
     <h1 class="title">選課紀錄列表</h1>
 
     <table class="table">
@@ -28,9 +33,14 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { fetchEnrollments } from '@/api/enrollments';
+import { themeStore } from '@/stores/theme';
 
 const enrollments = ref([]);
 const error = ref('');
+const theme = themeStore.theme;
+function toggleTheme() {
+  themeStore.toggleTheme();
+}
 
 async function load() {
   error.value = '';
@@ -46,11 +56,46 @@ onMounted(load);
 </script>
 
 <style scoped>
-/* Reusing styles from other list views */
 .container {
-  max-width: 960px;
-  margin: 24px auto;
-  padding: 0 12px;
+  background: inherit;
+  color: inherit;
+  padding: 32px 0;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 #000;
+  min-height: 80vh;
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.theme-btn-box {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  left: auto;
+  z-index: 10;
+  width: auto;
+  max-width: none;
+  display: flex;
+  justify-content: flex-end;
+}
+@media (max-width: 900px) {
+  .theme-btn-box {
+    position: static;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 12px;
+    top: auto;
+    right: auto;
+  }
+  .container {
+    padding-top: 56px;
+  }
 }
 .title {
   margin-bottom: 12px;
