@@ -160,11 +160,31 @@ onMounted(load);
   margin-bottom: 2rem;
   margin-left: auto;
   margin-right: auto;
+  background: var(--color-background-soft);
+  color: var(--color-text);
+  border: var(--nb-border-thick) solid var(--nb-border);
+  box-shadow: var(--nb-shadow);
+  border-radius: 16px;
 }
 .table th,
 .table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  border: 1.5px solid var(--nb-border);
+  padding: 12px 16px;
+  font-size: 1.08rem;
+  background: inherit;
+  color: inherit;
+  font-weight: 500;
+}
+.table th {
+  background: var(--color-background-mute);
+  color: var(--color-heading);
+}
+.table tr {
+  transition: background 0.2s;
+}
+.table tr:hover {
+  background: #ffe066;
+  color: #181818;
 }
 .error {
   color: #c33;

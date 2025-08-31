@@ -176,52 +176,78 @@ onMounted(async () => {
   color: inherit;
 }
 .table {
-  width: 95%;
+  width: 95%; /* 向內縮5% */
   border-collapse: collapse;
   margin-top: 2rem;
   margin-bottom: 2rem;
   margin-left: auto;
   margin-right: auto;
+  background: var(--color-background-soft);
+  color: var(--color-text);
+  border: var(--nb-border-thick) solid var(--nb-border);
+  box-shadow: var(--nb-shadow);
+  border-radius: 16px;
 }
 .table th, .table td {
-  border: 3px solid #000;
-  padding: 12px;
-  text-align: left;
+  border: 1.5px solid var(--nb-border);
+  padding: 12px 24px; /* 增加左右 padding */
+  font-size: 1.08rem;
+  background: inherit;
+  color: inherit;
+  font-weight: 500;
+}
+.table td:last-child {
+  min-width: 180px; /* 操作欄位寬度，避免按鈕擠在一起 */
 }
 .table th {
-  background: inherit;
-  color: inherit;
+  background: var(--color-background-mute);
+  color: var(--color-heading);
 }
-.table tr:nth-child(even) {
-  background: inherit;
+.table tr {
+  transition: background 0.2s;
 }
-.btn {
-  background: inherit;
-  color: inherit;
-  border: 3px solid #000;
-  padding: 8px 16px;
-  font-weight: bold;
-  box-shadow: 4px 4px 0 #000;
-  cursor: pointer;
-}
-.btn:hover {
-  background: #fff;
+.table tr:hover {
+  background: #ffe066;
   color: #181818;
 }
-.error {
+.btn.nb-brutal {
+  background: inherit;
+  color: inherit;
+  border: var(--nb-border-thick) solid var(--nb-border);
+  padding: 8px 16px;
+  font-weight: bold;
+  box-shadow: var(--nb-shadow);
+  cursor: pointer;
+  border-radius: 8px;
+  margin-right: 8px;
+  margin-bottom: 8px; /* 疊放時增加下方距離 */
+  transition: background 0.2s, color 0.2s;
+}
+.btn.nb-brutal + .btn.nb-brutal {
+  margin-left: 12px; /* 按鈕間距更大，橫向排列時也適用 */
+}
+.btn.nb-brutal:hover {
+  background: #ffe066;
+  color: #181818;
+}
+.error.nb-brutal {
   color: #fff;
   background: #c00;
   padding: 8px 16px;
-  margin-top: 24px;
-  border: 3px solid #000;
-  box-shadow: 4px 4px 0 #000;
+  border: var(--nb-border-thick) solid var(--nb-border);
+  box-shadow: var(--nb-shadow);
+  text-align: center;
+  border-radius: 8px;
+  margin-top: 16px;
 }
-.success {
+.success.nb-brutal {
   color: #181818;
-  background: #fff;
+  background: #ffe066;
   padding: 8px 16px;
-  margin-top: 24px;
-  border: 3px solid #000;
-  box-shadow: 4px 4px 0 #000;
+  border: var(--nb-border-thick) solid var(--nb-border);
+  box-shadow: var(--nb-shadow);
+  text-align: center;
+  border-radius: 8px;
+  margin-top: 16px;
 }
 </style>

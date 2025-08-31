@@ -14,9 +14,11 @@ import StudentCourseCatalog from '@/views/StudentCourseCatalog.vue'
 import UserSelector from '@/views/UserSelector.vue'
 import StudentProfile from '@/views/StudentProfile.vue'
 import TeacherProfile from '@/views/TeacherProfile.vue'
+import UserJump from '@/views/UserJump.vue'
 
 const routes = [
     { path: '/', name: 'user-selector', component: UserSelector },
+    { path: '/user-jump', name: 'user-jump', component: UserJump },
 
     // Admin Routes
     { path: '/teachers', name: 'teachers', component: TeacherList, meta: { requiresAuth: true, role: 'ADMIN' } },

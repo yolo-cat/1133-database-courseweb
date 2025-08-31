@@ -9,18 +9,21 @@
             <router-link to="/students">Students</router-link> |
             <router-link to="/teachers">Teachers</router-link> |
             <router-link to="/courses">Courses</router-link> |
-            <router-link to="/enrollments">Enrollments</router-link>
+            <router-link to="/enrollments">Enrollments</router-link> |
+<!--            <router-link to="/user-jump">用戶名稱跳轉</router-link>-->
           </div>
           <div v-if="isTeacher" class="nav-section">
             <strong>Teacher:</strong>
             <router-link to="/teacher/dashboard">Dashboard</router-link> |
-            <router-link to="/teacher/profile">My Profile</router-link>
+            <router-link to="/teacher/profile">My Profile</router-link> |
+<!--            <router-link to="/user-jump">用戶名稱跳轉</router-link>-->
           </div>
           <div v-if="isStudent" class="nav-section">
             <strong>Student:</strong>
             <router-link to="/student/dashboard">Dashboard</router-link> |
             <router-link to="/student/courses">Course Catalog</router-link> |
-            <router-link to="/student/profile">My Profile</router-link>
+            <router-link to="/student/profile">My Profile</router-link> |
+<!--            <router-link to="/user-jump">用戶名稱跳轉</router-link>-->
           </div>
           <span class="nav-actions">
             Welcome, {{ userName }} ({{ userRole }})
