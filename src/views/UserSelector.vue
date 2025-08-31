@@ -5,15 +5,15 @@
         {{ theme === 'light' ? '夜間模式' : '白天模式' }}
       </button>
     </div>
-    <div class="role-selector-stack nb-brutal">
-      <h2 class="role-title">快速身份選擇</h2>
-      <div class="role-btn-group">
-        <button class="role-btn nb-brutal" @click="quickSelectRole('ADMIN')">管理員</button>
-        <button class="role-btn nb-brutal" @click="quickSelectRole('TEACHER')">教師</button>
-        <button class="role-btn nb-brutal" @click="quickSelectRole('STUDENT')">學生</button>
-      </div>
-      <p v-if="quickRole" class="selected-msg nb-brutal">已選擇身份：{{ roleLabel[quickRole] }}</p>
-    </div>
+<!--    <div class="role-selector-stack nb-brutal">-->
+<!--      <h2 class="role-title">快速身份選擇</h2>-->
+<!--      <div class="role-btn-group">-->
+<!--        <button class="role-btn nb-brutal" @click="quickSelectRole('ADMIN')">管理員</button>-->
+<!--        <button class="role-btn nb-brutal" @click="quickSelectRole('TEACHER')">教師</button>-->
+<!--        <button class="role-btn nb-brutal" @click="quickSelectRole('STUDENT')">學生</button>-->
+<!--      </div>-->
+<!--      <p v-if="quickRole" class="selected-msg nb-brutal">已選擇身份：{{ roleLabel[quickRole] }}</p>-->
+<!--    </div>-->
     <!-- stack在body上方，以下為原本內容 -->
     <div class="center-content">
       <h1 class="title">選擇身份登入</h1>
@@ -107,17 +107,21 @@ async function handleLogin(user) {
   }
 }
 
-function quickSelectRole(role) {
-  quickRole.value = role;
-  // 根據選擇的身份過濾使用者
-  if (role === 'TEACHER') {
-    allUsers.value = teachers.value;
-  } else if (role === 'STUDENT') {
-    allUsers.value = students.value;
-  } else {
-    allUsers.value = [];
-  }
-}
+// function quickSelectRole(role) {
+//   quickRole.value = role;
+//   if (role === 'ADMIN') {
+//     // 管理員顯示全部
+//     loadUsers();
+//   } else if (role === 'TEACHER') {
+//     // 只顯示教師名單
+//     allUsers.value = teachers.value;
+//   } else if (role === 'STUDENT') {
+//     // 只顯示學生名單
+//     allUsers.value = students.value;
+//   } else {
+//     allUsers.value = [];
+//   }
+// }
 
 function getLastFirst(displayName) {
   if (!displayName) return '';
