@@ -26,7 +26,7 @@
 <!--            <router-link to="/user-jump">用戶名稱跳轉</router-link>-->
           </div>
           <span class="nav-actions">
-            Welcome, {{ userName }} ({{ userRole }})
+            Welcome, {{ userName }}
             <button @click="handleLogout" class="logout-btn nb-brutal">Logout</button>
           </span>
         </div>
@@ -86,6 +86,32 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+:root {
+  --color-text-light: #181818;
+  --color-text-dark: #fff;
+  --color-table-hover-bg: #ffe066;
+  --color-nav-link-active-light: #181818;
+  --color-nav-link-active-dark: #181818;
+}
+[data-theme="light"] {
+  --color-text: var(--color-text-light);
+  --color-table-hover-bg: #ffe066;
+  --color-nav-link-active: var(--color-nav-link-active-light);
+}
+[data-theme="dark"] {
+  --color-text: var(--color-text-dark);
+  --color-table-hover-bg: #ffd700;
+  --color-nav-link-active: var(--color-nav-link-active-dark);
+}
+
+#app, header, nav, .nav-section, .nav-actions, main, .logout-btn, .theme-btn {
+  color: var(--color-text) !important;
+}
+
+nav a, .title, h2, th, td {
+  color: var(--color-text) !important;
+}
+
 #app {
   display: flex;
   flex-direction: column;
@@ -126,6 +152,7 @@ nav {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.03);
   padding: 0.5rem 1rem;
+  margin-top: 8px; /* 增加與 header 外框距離 */
 }
 
 .nav-left {
@@ -143,6 +170,7 @@ nav {
   display: flex;
   gap: 1rem;
   align-items: center;
+  margin-right: 24px; /* 增加與外框距離，防止陰影重疊 */
 }
 
 .nav-actions {
@@ -150,6 +178,7 @@ nav {
   gap: 1rem;
   align-items: center;
   justify-content: center;
+  margin-right: 24px; /* 增加與外框距離 */
 }
 
 nav a {
@@ -162,15 +191,27 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: var(--color-nav-link-active);
-  background: rgba(0,0,0,0.07);
+  color: var(--color-nav-link-active) !important;
+  background: var(--color-table-hover-bg, #ffe066);
   font-weight: bold;
 }
 
 nav a:focus, nav a:hover {
-  background: rgba(0,0,0,0.10);
+  background: var(--color-table-hover-bg, #ffe066);
   color: var(--color-nav-link-active);
   outline: none;
+}
+
+:global([data-theme="dark"] .router-link-exact-active) {
+  color: #181818 !important;
+  background: #ffd700 !important;
+  border-color: #181818 !important;
+}
+
+[data-theme="dark"] nav a:focus,
+[data-theme="dark"] nav a:hover {
+  background: var(--color-table-hover-bg, #ffd700);
+  color: #181818 !important;
 }
 
 .logout-btn {

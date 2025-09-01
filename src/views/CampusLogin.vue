@@ -88,6 +88,8 @@ async function handleLogin() {
   padding-top: 80px;
   padding-left: 5vw;
   padding-right: 5vw;
+  box-shadow: none !important;
+  border: 3px solid transparent !important;
 }
 @media (min-width: 1200px) {
   .campus-login-container {

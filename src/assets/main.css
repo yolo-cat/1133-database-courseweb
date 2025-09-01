@@ -158,3 +158,10 @@ main {
   margin: 0 auto;
   box-sizing: border-box;
 }
+
+/* 夜間模式下導航按鈕 active 狀態強制黑色文字和邊框、黃色背景 */
+.nb-theme-dark nav.nb-brutal a.router-link-exact-active {
+  color: #181818 !important;
+  background: #ffd700 !important;
+  border-color: #181818 !important;
+}

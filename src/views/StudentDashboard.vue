@@ -105,6 +105,9 @@ onMounted(load);
 .table tr:nth-child(even) {
   background: inherit;
 }
+.table tr:hover {
+  background: var(--color-table-hover-bg, #ffe066);
+}
 .error {
   color: #fff;
   background: #c00;
