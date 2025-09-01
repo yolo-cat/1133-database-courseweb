@@ -57,7 +57,7 @@ const isStudent = computed(() => userRole.value === 'STUDENT');
 
 function handleLogout() {
   authStore.logout();
-  router.push({ name: 'user-selector' });
+  router.push({ path: '/' }); // 登出後導向 CampusLogin.vue
 }
 
 const theme = themeStore.theme;

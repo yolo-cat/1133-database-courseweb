@@ -15,9 +15,10 @@ import UserSelector from '@/views/UserSelector.vue'
 import StudentProfile from '@/views/StudentProfile.vue'
 import TeacherProfile from '@/views/TeacherProfile.vue'
 import UserJump from '@/views/UserJump.vue'
+import CampusLogin from '@/views/CampusLogin.vue'
 
 const routes = [
-    { path: '/', name: 'user-selector', component: UserSelector },
+    { path: '/', name: 'campus-login', component: CampusLogin },
     { path: '/user-jump', name: 'user-jump', component: UserJump },
 
     // Admin Routes
