@@ -4,6 +4,7 @@
       <button @click="toggleTheme" class="theme-btn nb-brutal">
         {{ theme === 'light' ? '夜間模式' : '白天模式' }}
       </button>
+      <button @click="goToUserSelector" class="admin-btn nb-brutal">管理員</button>
     </div>
     <div class="login-box nb-brutal">
       <h1 class="title">校園登入系統</h1>
@@ -45,6 +46,10 @@ const theme = themeStore.theme;
 const themeClass = themeStore.themeClass;
 function toggleTheme() {
   themeStore.toggleTheme();
+}
+
+function goToUserSelector() {
+  router.push('/userselector');
 }
 
 async function handleLogin() {
@@ -205,6 +210,22 @@ input, select {
   cursor: pointer;
 }
 .theme-btn:hover {
+  background: #fff;
+  color: #181818;
+}
+.admin-btn {
+  margin-left: 12px;
+  padding: 8px 20px;
+  font-weight: bold;
+  background: #181818;
+  color: #fff;
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0 #000;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+.admin-btn:hover {
   background: #fff;
   color: #181818;
 }

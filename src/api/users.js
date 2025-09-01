@@ -11,3 +11,7 @@ export function loginAs(username) {
 export function loginAsId(id, role) {
     return http.post('/login-as-id', { id, role });
 }
+
+export function deleteUser(id) {
+    return http.delete(`/users/${id}`);
+}

@@ -20,6 +20,7 @@ import CampusLogin from '@/views/CampusLogin.vue'
 const routes = [
     { path: '/', name: 'campus-login', component: CampusLogin },
     { path: '/user-jump', name: 'user-jump', component: UserJump },
+    { path: '/userselector', name: 'userselector', component: UserSelector },
 
     // Admin Routes
     { path: '/teachers', name: 'teachers', component: TeacherList, meta: { requiresAuth: true, role: 'ADMIN' } },

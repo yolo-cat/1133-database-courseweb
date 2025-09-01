@@ -4,6 +4,7 @@
       <button @click="toggleTheme" class="theme-btn nb-brutal">
         {{ theme === 'light' ? '夜間模式' : '白天模式' }}
       </button>
+      <button @click="handleLogout" class="logout-btn nb-brutal">Logout</button>
     </div>
 <!--    <div class="role-selector-stack nb-brutal">-->
 <!--      <h2 class="role-title">快速身份選擇</h2>-->
@@ -26,6 +27,7 @@
             <div class="user-name">{{ getLastFirst(user.displayName) }}</div>
             <div class="user-role">{{ user.role }}</div>
             <div class="user-username">({{ user.username }})</div>
+            <button class="delete-btn nb-brutal" @click.stop="handleDelete(user)">刪除</button>
           </div>
         </div>
         <p v-else>沒有老師資料</p>
@@ -37,6 +39,7 @@
             <div class="user-name">{{ getLastFirst(user.displayName) }}</div>
             <div class="user-role">{{ user.role }}</div>
             <div class="user-username">({{ user.username }})</div>
+            <button class="delete-btn nb-brutal" @click.stop="handleDelete(user)">刪除</button>
           </div>
         </div>
         <p v-else>沒有學生資料</p>
@@ -49,7 +52,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { fetchAllUsers, loginAsId } from '@/api/users';
+import { fetchAllUsers, loginAsId, deleteUser } from '@/api/users';
 import { authStore } from '@/stores/auth';
 import { themeStore } from '@/stores/theme';
 
@@ -105,6 +108,23 @@ async function handleLogin(user) {
   } catch (e) {
     error.value = e?.response?.data?.message || '模擬登入失敗。';
   }
+}
+
+async function handleDelete(user) {
+  if (!confirm(`確定要刪除 ${user.displayName} (${user.username}) 嗎？`)) return;
+  error.value = '';
+  try {
+    await deleteUser(user.id);
+    allUsers.value = allUsers.value.filter(u => u.id !== user.id);
+    error.value = `${user.displayName} 已刪除。`;
+  } catch (e) {
+    error.value = e?.response?.data?.message || '刪除失敗。';
+  }
+}
+
+function handleLogout() {
+  authStore.logout();
+  router.push('/');
 }
 
 // function quickSelectRole(role) {
@@ -329,5 +349,40 @@ onMounted(loadUsers);
 .theme-btn:hover {
   background: #fff;
   color: #181818;
+}
+.logout-btn {
+  margin-left: 12px;
+  padding: 8px 20px;
+  font-weight: bold;
+  background: #c00;
+  color: #fff;
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0 #000;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+.logout-btn:hover {
+  background: #fff;
+  color: #c00;
+}
+.delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #c00;
+  border: 2px solid #c00;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: background 0.3s, color 0.3s;
+  box-shadow: 2px 2px 0 #000;
+}
+.delete-btn:hover {
+  background: #c00;
+  color: #fff;
 }
 </style>
