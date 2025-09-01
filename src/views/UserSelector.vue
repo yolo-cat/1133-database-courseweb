@@ -1,27 +1,88 @@
 <template>
   <div class="container nb-brutal" :class="themeClass">
+    <div class="add-btn-box">
+      <button @click="showAddModal = true" class="add-btn nb-brutal">新增成員</button>
+    </div>
     <div class="theme-btn-box">
       <button @click="toggleTheme" class="theme-btn nb-brutal">
         {{ theme === 'light' ? '夜間模式' : '白天模式' }}
       </button>
       <button @click="handleLogout" class="logout-btn nb-brutal">Logout</button>
     </div>
-<!--    <div class="role-selector-stack nb-brutal">-->
-<!--      <h2 class="role-title">快速身份選擇</h2>-->
-<!--      <div class="role-btn-group">-->
-<!--        <button class="role-btn nb-brutal" @click="quickSelectRole('ADMIN')">管理員</button>-->
-<!--        <button class="role-btn nb-brutal" @click="quickSelectRole('TEACHER')">教師</button>-->
-<!--        <button class="role-btn nb-brutal" @click="quickSelectRole('STUDENT')">學生</button>-->
-<!--      </div>-->
-<!--      <p v-if="quickRole" class="selected-msg nb-brutal">已選擇身份：{{ roleLabel[quickRole] }}</p>-->
-<!--    </div>-->
+    <div v-if="showAddModal" class="modal-overlay">
+      <div class="modal nb-brutal">
+        <h2>新增成員</h2>
+        <div class="modal-type-group">
+          <label>
+            <input type="radio" value="STUDENT" v-model="addType" /> 新增學生
+          </label>
+          <label>
+            <input type="radio" value="TEACHER" v-model="addType" /> 新增教師
+          </label>
+        </div>
+        <form @submit.prevent="handleAddMember">
+          <template v-if="addType === 'STUDENT'">
+            <div class="form-group">
+              <label>名字</label>
+              <input v-model="addForm.firstName" required placeholder="請輸入名字" />
+            </div>
+            <div class="form-group">
+              <label>姓氏</label>
+              <input v-model="addForm.lastName" required placeholder="請輸入姓氏" />
+            </div>
+            <div class="form-group">
+              <label>帳號</label>
+              <input v-model="addForm.username" required placeholder="請輸入帳號" />
+            </div>
+            <div class="form-group">
+              <label>密碼</label>
+              <input v-model="addForm.password" required type="password" placeholder="請輸入密碼" />
+            </div>
+            <div class="form-group">
+              <label>電子郵件</label>
+              <input v-model="addForm.email" required type="email" placeholder="請輸入電子郵件" />
+            </div>
+            <div class="form-group">
+              <label>生日</label>
+              <input v-model="addForm.dateOfBirth" required type="date" placeholder="請選擇生日" />
+            </div>
+          </template>
+          <template v-else>
+            <div class="form-group">
+              <label>姓名</label>
+              <input v-model="addForm.name" required placeholder="請輸入姓名" />
+            </div>
+            <div class="form-group">
+              <label>帳號</label>
+              <input v-model="addForm.username" required placeholder="請輸入帳號" />
+            </div>
+            <div class="form-group">
+              <label>密碼</label>
+              <input v-model="addForm.password" required type="password" placeholder="請輸入密碼" />
+            </div>
+            <div class="form-group">
+              <label>電子郵件</label>
+              <input v-model="addForm.email" required type="email" placeholder="請輸入電子郵件" />
+            </div>
+            <div class="form-group">
+              <label>年齡</label>
+              <input v-model="addForm.age" required type="number" min="18" placeholder="請輸入年齡" />
+            </div>
+          </template>
+          <div class="modal-actions">
+            <button type="submit" class="add-btn nb-brutal">送出</button>
+            <button type="button" class="cancel-btn nb-brutal" @click="closeAddModal">取消</button>
+          </div>
+        </form>
+        <div v-if="addError" class="error nb-brutal">{{ addError }}</div>
+      </div>
+    </div>
     <!-- stack在body上方，以下為原本內容 -->
     <div class="center-content">
-      <h1 class="title">選擇身份登入</h1>
-      <p>請點擊一個帳號以登入系統</p>
+      <h1 class="title">校園管理員系統</h1>
       <div v-if="error" class="error nb-brutal">{{ error }}</div>
       <div class="login-section">
-        <h2>老師登入區</h2>
+        <h2>管理老師</h2>
         <div v-if="teachers.length > 0" class="user-list">
           <div v-for="user in teachers" :key="user.id" class="user-card" @click="handleLogin(user)">
             <div class="user-name">{{ getLastFirst(user.displayName) }}</div>
@@ -33,7 +94,7 @@
         <p v-else>沒有老師資料</p>
       </div>
       <div class="login-section">
-        <h2>學生登入區</h2>
+        <h2>管理學生</h2>
         <div v-if="students.length > 0" class="user-list">
           <div v-for="user in students" :key="user.id" class="user-card" @click="handleLogin(user)">
             <div class="user-name">{{ getLastFirst(user.displayName) }}</div>
@@ -52,15 +113,34 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { fetchAllUsers, loginAsId, deleteUser } from '@/api/users';
+import { fetchAllUsers, loginAsId } from '@/api/users';
+import { deleteStudent } from '@/api/students';
+import { deleteTeacher } from '@/api/teachers';
 import { authStore } from '@/stores/auth';
 import { themeStore } from '@/stores/theme';
+import { createStudent } from '@/api/students';
+import { createTeacher } from '@/api/teachers';
 
 const router = useRouter();
 const allUsers = ref([]);
 const error = ref('');
 const loading = ref(true);
 const quickRole = ref(null);
+const showAddModal = ref(false);
+const addType = ref('STUDENT');
+const addForm = ref({
+  // 學生欄位
+  firstName: '',
+  lastName: '',
+  username: '',
+  password: '',
+  email: '',
+  dateOfBirth: '',
+  // 老師欄位
+  name: '',
+  age: '',
+});
+const addError = ref('');
 
 const teachers = computed(() => allUsers.value.filter(u => u.role === 'TEACHER'));
 const students = computed(() => allUsers.value.filter(u => u.role === 'STUDENT'));
@@ -110,11 +190,18 @@ async function handleLogin(user) {
   }
 }
 
+// 刪除 API 根據角色分流
 async function handleDelete(user) {
   if (!confirm(`確定要刪除 ${user.displayName} (${user.username}) 嗎？`)) return;
   error.value = '';
   try {
-    await deleteUser(user.id);
+    if (user.role === 'TEACHER') {
+      await deleteTeacher(user.id);
+    } else if (user.role === 'STUDENT') {
+      await deleteStudent(user.id);
+    } else {
+      throw new Error('僅能刪除老師或學生');
+    }
     allUsers.value = allUsers.value.filter(u => u.id !== user.id);
     error.value = `${user.displayName} 已刪除。`;
   } catch (e) {
@@ -124,7 +211,66 @@ async function handleDelete(user) {
 
 function handleLogout() {
   authStore.logout();
-  router.push('/');
+  router.push({ name: 'campus-login' });
+}
+
+function closeAddModal() {
+  showAddModal.value = false;
+  addType.value = 'STUDENT';
+  addForm.value = {
+    firstName: '',
+    lastName: '',
+    username: '',
+    password: '',
+    email: '',
+    dateOfBirth: '',
+    name: '',
+    age: '',
+  };
+  addError.value = '';
+}
+async function handleAddMember() {
+  addError.value = '';
+  // 前端檢查帳號唯一性
+  const usernameExists = allUsers.value.some(u => u.username === addForm.value.username);
+  if (usernameExists) {
+    addError.value = '帳號已存在，請更換帳號';
+    return;
+  }
+  try {
+    if (addType.value === 'STUDENT') {
+      if (!addForm.value.firstName || !addForm.value.lastName || !addForm.value.username || !addForm.value.password || !addForm.value.email || !addForm.value.dateOfBirth) {
+        addError.value = '所有欄位必填';
+        return;
+      }
+      await createStudent({
+        firstName: addForm.value.firstName,
+        lastName: addForm.value.lastName,
+        username: addForm.value.username,
+        password: addForm.value.password,
+        email: addForm.value.email,
+        dateOfBirth: addForm.value.dateOfBirth,
+        role: 'STUDENT',
+      });
+    } else if (addType.value === 'TEACHER') {
+      if (!addForm.value.name || !addForm.value.username || !addForm.value.password || !addForm.value.email || !addForm.value.age) {
+        addError.value = '所有欄位必填';
+        return;
+      }
+      await createTeacher({
+        name: addForm.value.name,
+        username: addForm.value.username,
+        password: addForm.value.password,
+        email: addForm.value.email,
+        age: Number(addForm.value.age),
+        role: 'TEACHER',
+      });
+    }
+    await loadUsers();
+    closeAddModal();
+  } catch (e) {
+    addError.value = e?.response?.data?.message || '新增失敗。';
+  }
 }
 
 // function quickSelectRole(role) {
@@ -173,6 +319,12 @@ onMounted(loadUsers);
   flex-direction: column;
   align-items: center;
 }
+.add-btn-box {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 11;
+}
 .theme-btn-box {
   position: absolute;
   top: 16px;
@@ -185,6 +337,15 @@ onMounted(loadUsers);
   justify-content: flex-end;
 }
 @media (max-width: 900px) {
+  .add-btn-box {
+    position: static;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 12px;
+    top: auto;
+    left: auto;
+  }
   .theme-btn-box {
     position: static;
     width: 100%;
@@ -384,5 +545,99 @@ onMounted(loadUsers);
 .delete-btn:hover {
   background: #c00;
   color: #fff;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.modal {
+  background: var(--color-background);
+  color: var(--color-text);
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 #000;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+}
+.modal h2 {
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 1.8rem;
+  text-align: center;
+}
+.modal-type-group {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.modal-type-group label {
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: inherit;
+}
+.modal-type-group input {
+  margin-right: 8px;
+}
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-background-mute);
+  color: var(--color-text);
+  font-size: 1rem;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+.add-btn {
+  padding: 8px 16px;
+  font-weight: bold;
+  background: #4caf50;
+  color: #fff;
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0 #000;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+.add-btn:hover {
+  background: #fff;
+  color: #4caf50;
+}
+.cancel-btn {
+  padding: 8px 16px;
+  font-weight: bold;
+  background: #f44336;
+  color: #fff;
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0 #000;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+.cancel-btn:hover {
+  background: #fff;
+  color: #f44336;
 }
 </style>
