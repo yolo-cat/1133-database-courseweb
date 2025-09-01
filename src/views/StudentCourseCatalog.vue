@@ -27,19 +27,20 @@
         <td>{{ course.credits }}</td>
         <td>{{ course.teacher?.name }}</td>
         <td>
-          <button
-            class="btn nb-brutal"
-            @click="enroll(course.courseId)"
-            :disabled="enrolledCourseIds.includes(course.courseId)"
-          >
-            {{ enrolledCourseIds.includes(course.courseId) ? '已選' : '選課' }}
-          </button>
-          <button
-            v-if="enrolledCourseIds.includes(course.courseId)"
-            class="btn nb-brutal"
-            style="margin-left:8px;"
-            @click="drop(course.courseId)"
-          >退選</button>
+          <div class="action-btns">
+            <button
+              class="btn nb-brutal"
+              @click="enroll(course.courseId)"
+              :disabled="enrolledCourseIds.includes(course.courseId)"
+            >
+              {{ enrolledCourseIds.includes(course.courseId) ? '已選' : '選課' }}
+            </button>
+            <button
+              v-if="enrolledCourseIds.includes(course.courseId)"
+              class="btn nb-brutal"
+              @click="drop(course.courseId)"
+            >退選</button>
+          </div>
         </td>
       </tr>
       </tbody>
@@ -197,7 +198,12 @@ onMounted(async () => {
   font-weight: 500;
 }
 .table td:last-child {
-  min-width: 180px; /* 操作欄位寬度，避免按鈕擠在一起 */
+  min-width: 180px;
+  /* 移除 display: flex; align-items: center; */
+}
+.action-btns {
+  display: flex;
+  align-items: center;
 }
 .table th {
   background: var(--color-background-mute);
